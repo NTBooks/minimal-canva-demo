@@ -2,6 +2,8 @@
 
 This demo demonstrates the bare minimum needed to authenticate with Canva, allow a user to create a design, retrieve an image of that design, and send it to a server.
 
+![Canva Demo](./CanvaDemo.gif)
+
 ## Design Considerations
 
 - **Vanilla JavaScript**: The project uses vanilla JavaScript instead of TypeScript to keep the code clean and simple. In production, you might want to use TypeScript and a real UI framework like React or Vue.
