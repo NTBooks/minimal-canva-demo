@@ -1,18 +1,26 @@
 // Feel free to ignore this, in a real app you'd use a front-end framework like React
-
-// show by ID
 function showById(id) {
-    return document.getElementById(id).style.display = "block";
+    try {
+        return document.getElementById(id).style.display = "block";
+    } catch (e) {
+        console.error(e);
+    }
 }
 
-// hide by ID
 function hideById(id) {
-    return document.getElementById(id).style.display = "none";
+    try {
+        return document.getElementById(id).style.display = "none";
+    } catch (e) {
+        console.error(e);
+    }
 }
 
-// set id innerText
 function setInnerText(id, text) {
-    return document.getElementById(id).innerText = text;
+    try {
+        return document.getElementById(id).innerText = text;
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 function clearLocalStorage() {

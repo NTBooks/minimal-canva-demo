@@ -2,7 +2,6 @@
 <html lang="en">
 
 <!-- This demo only uses vanilla JS, you can replace it with the client framework of your choice -->
-<!-- "This tool assumes you already have a saved project in canva with your customizable credential" -->
 
 <head>
     <meta charset="UTF-8">
@@ -16,14 +15,12 @@
     <link rel="stylesheet" href="style.css">
     <script src="canva_endpoints.js"></script>
     <script src="dom_utils.js"></script>
-</head>
-
-<body>
     <script>
         let userToken = null;
+        let waitid = null;
 
         // Handle the popup canva auth request
-        function handlePopup() {
+        function handleAuthPopup() {
             try {
                 var popup = window.open('/canva/approve', 'popup', 'width=480,height=800');
                 var popupChecker = setInterval(function () {
@@ -52,10 +49,15 @@
                 if (userToken) {
                     hideById('login');
                     showById('starthidden');
-                    setInnerText('whoami', "Got user token!");
+                    showById('logout');
 
                     // Store the userToken in localStorage for persistence
                     localStorage.setItem('canvaToken', userToken);
+                } else {
+
+                    // remove the userToken from localStorage if it doesn't exist
+                    localStorage.removeItem('canvaToken');
+                    showById('login');
                 }
 
             } catch (error) {
@@ -64,18 +66,26 @@
         }
 
         function PollJobStatus(exportid) {
+            showById('pollspinner');
+            hideById('newdesign');
+            hideById('apptitle');
+
             setTimeout(async () => {
                 try {
+                    // Call the API using the same token we use on the server side
+                    // You can extend this to the entire canva REST API
                     const response = await CanvaFetch('exports/' + exportid, 'GET', null);
 
                     const data = await response.json();
                     console.log(data);
 
                     if (data.job?.status === "success") {
-                        console.log("FOUND IT!")
+                        // Set the image source to the first URL in the array
                         document.getElementById('imgresult').src = data.job?.urls?.[0];
-                        document.getElementById('imgresult').style.display = 'block';
-                        document.getElementById('postimage').style.display = 'block';
+
+                        showById('imgresult');
+                        showById('postimage');
+                        hideById('pollspinner');
 
                         // remove the querystring from the url in the address bar without reloading
                         window.history.pushState({}, document.title, "/");
@@ -99,21 +109,29 @@
         window.addEventListener('load', function () {
 
             userToken = localStorage.getItem('canvaToken');
+            console.log(userToken);
 
             if (userToken) {
+                // load login state
                 fetchWhoami();
+            } else {
+                showById('login');
             }
 
-            // This is our return path from Canva after a user makes a design
-            // if the querystring has a waitid start polling
+            // When a user is returning from Canva after making a design they will have the waitid querystring set
             const urlParams = new URLSearchParams(window.location.search);
-            const waitid = urlParams.get('waitid');
+            waitid = urlParams.get('waitid');
 
             if (waitid) {
+                // Render the polling state
                 PollJobStatus(waitid);
+            } else {
+                // Render the initial state
+                showById('newdesign');
             }
         });
 
+        // Example of how you can upload an image from one in an <img> tag to your server
         async function postImageToServer() {
             const imgElement = document.getElementById('imgresult');
             const imgSrc = imgElement.src;
@@ -124,6 +142,7 @@
             }
 
             try {
+                // This isn't super efficient, but it prevents the server from having to download a potentially unsafe image
                 const response = await fetch(imgSrc);
                 const blob = await response.blob();
 
@@ -137,6 +156,8 @@
 
                 const result = await serverResponse.json();
                 console.log('Image posted successfully:', result);
+                document.getElementById('postbutton').replaceWith(document.createTextNode('Image Posted!'));
+
             } catch (error) {
                 console.error('Error posting image:', error);
             }
@@ -144,24 +165,56 @@
 
 
     </script>
-    <h1>Welcome to Minimal Canva Integration</h1>
+</head>
 
-    <a id="login" href="#" onclick="handlePopup()">Canva Auth</a>
+<body class="text-center">
+    <div class="cover-container d-flex h-100 p-3 mx-auto flex-column fadeIn" style="opacity: 0;">
+        <header class="masthead mb-auto">
+            <div class="inner">
+                <h3 class="masthead-brand">Minimal Canva Integration</h3>
+                <nav class="nav nav-masthead justify-content-center">
+                    <a class="nav-link active" href="/">Demo</a>
+
+                    <a id="logout" class="nav-link" href="#" onclick="clearLocalStorage()">Logout</a>
+                </nav>
+            </div>
+        </header>
+
+        <main role="main" class="inner cover">
+
+            <h1 id="apptitle" class="cover-heading">Welcome to Minimal Canva Integration</h1>
+
+            <a id="login" href="#" onclick="handleAuthPopup()" class="btn btn-lg btn-primary m-5 fadeIn">Canva Auth</a>
 
 
-    <div id="starthidden">
-        <a id="logout" href="#" onclick="clearLocalStorage()">Logout</a>
-        <div id="whoami">
+            <div id="starthidden" class="text-center">
 
-        </div>
-        <a href="/newdesign">Create New Design</a>
 
-        <img id="imgresult" class="fadeIn"></img>
+                <a href=" /newdesign" class="btn btn-lg btn-primary m-5 fadeIn" id="newdesign">Create New Design</a>
 
-        <button id="postimage" class="fadeIn" onclick="postImageToServer()">Post Image to Server</button>
+
+                <div id="pollspinner" class="fadeIn w-100" style="display:none">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <img id="imgresult" class="fadeIn"></img>
+
+                <div id="postimage" class="fadeIn mt-3">
+                    <button id="postbutton" class="btn btn-secondary" onclick="postImageToServer()">Post Image to
+                        Server</button>
+                    <a href=" /newdesign" class="btn btn-primary m-x">Create New Design</a>
+                </div>
+            </div>
+        </main>
+
+        <footer class="mastfoot mt-auto">
+            <div class="inner">
+                <p>Minimal Canva Integration demo by NTBooks.</p>
+            </div>
+        </footer>
+
     </div>
-
-
 </body>
 
 </html>

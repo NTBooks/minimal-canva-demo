@@ -8,7 +8,8 @@ import {
     queryAuthByUser,
     updateAuthToken,
     updateUserToken,
-    updateDesignRecord
+    updateDesignRecord,
+    queryDesignByUser
 
 } from './sqlite.js';
 
@@ -45,8 +46,7 @@ function getCanvaAuthURL(state) {
     return process.env.CANVA_AUTH_URL
         .replace('<CLIENT_ID>', process.env.CANVA_CLIENT_ID)
         .replace('<CODE_CHALLENGE>', codeChallenge)
-        .replace('<STATE>', state)
-        .replace('<REDIRECT_URI>', process.env.CANVA_REDIRECT_URI);
+        .replace('<STATE>', state);
 
 }
 
@@ -108,7 +108,7 @@ app.get('/canva/redirect', requiresAuth, async (req, res) => {
                 "Authorization": `Basic ${credentials}`,
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            body: new URLSearchParams(`grant_type=authorization_code&code_verifier=${codeVerifier}&code=${token}`), //&redirect_uri=${process.env.CANVA_REDIRECT_URI}
+            body: new URLSearchParams(`grant_type=authorization_code&code_verifier=${codeVerifier}&code=${token}`),
         });
 
         const authjson = await authtokenresult.json();
@@ -130,7 +130,7 @@ app.get('/canva/redirect', requiresAuth, async (req, res) => {
 
 app.get("/", requiresAuth, async (req, res) => {
 
-    // read correlation_jwt from query string, and set it to localstorage.correlation_jwt
+    // if we have acorrelation_jwt then this is a return request from canva
     const correlation_jwt = req.query.correlation_jwt;
 
     if (correlation_jwt) {
@@ -145,7 +145,15 @@ app.get("/", requiresAuth, async (req, res) => {
         // Assuming the payload contains a design ID
         const designId = payload.design_id;
 
+        // TODO: verify correlation
+        const userDesigns = await queryDesignByUser(req.userid);
+
         if (designId) {
+
+            if (!userDesigns?.find(x => x.correlation_state === payload.correlation_state)) {
+                return res.status(401).send("Invalid correlation state");
+            };
+
             const canvaresult = await CanvaFetch(req.userid, `exports`, "POST", {
                 "design_id": designId,
                 "format": {
@@ -155,15 +163,9 @@ app.get("/", requiresAuth, async (req, res) => {
 
             const exportResult = await canvaresult.json();
             if (exportResult) {
-                //return res.redirect(exportResult.urls.png);
-
-
                 return res.redirect('/?waitid=' + exportResult?.job?.id);
-                // return res.sendFile('index.html', { root: 'public' });
             }
         }
-
-        //return res.send(payload);
     }
 
     return res.sendFile('index.html', { root: 'public' });
@@ -183,8 +185,6 @@ app.get("/newdesign", requiresAuth, async (req, res) => {
             "name": "presentation"
         }
     });
-
-    //https://www.canva.com/design?create&type=TACVRbb31Ns&category=tAF9TtPDH-k&analyticsCorrelationId=60820745-315a-49d2-9231-5276f82e4a10
 
     const canvapack = await canvaresult.json();
     if (!canvapack?.design) return res.send(canvapack);

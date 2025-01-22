@@ -1,4 +1,20 @@
-/.env
-/data
-/node_modules
-/uploads
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# TypeScript v1 declaration files
+typings/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# dotenv environment variables file
+.env
+
+uploads/
+data/
+node_modules/

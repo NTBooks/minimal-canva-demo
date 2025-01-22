@@ -5,6 +5,7 @@ sqlite3.verbose();
 
 
 const dbPath = './data/db.sqlite';
+
 const dbDir = path.dirname(dbPath);
 
 if (!fs.existsSync(dbDir)) {

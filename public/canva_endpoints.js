@@ -13,8 +13,9 @@ function CanvaFetch(apiroute, method = "GET", body = null) {
     });
 }
 
-// async function CreateNewDesign() {
+
 //     // NOT USED, example of how you can call the Canva API to create a new design on the client instead of the server
+// async function CreateNewDesign() {
 //     const canvaresult = await CanvaFetch("designs", "POST", {
 //         "title": "ChainLetter Credential",
 //         "design_type": {
