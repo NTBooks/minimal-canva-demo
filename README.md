@@ -10,9 +10,9 @@ This demo demonstrates the bare minimum needed to authenticate with Canva, allow
 
 ## Highlights
 
-- **/public/index.html**: This is the main view for the application and has three states (User Logged Out, Handling Canva Return Request, and Displaying the User's Canva Design).
-- **/src/index.js**: All the route logic to connect to Canva is in this file.
-- **/public/canva_endpoints.js**: This includes a fetch utility function to send your Canva auth token to any Canva REST API endpoints. If you want to wrap the API without using a full API generator like the Canva quickstart, you would add those functions here.
+- **[/public/index.html](./public/index.html)**: This is the main view for the application and has three states (User Logged Out, Handling Canva Return Request, and Displaying the User's Canva Design).
+- **[/src/index.js](./src/index.js)**: All the route logic to connect to Canva is in this file.
+- **[/public/canva_endpoints.js](./public/canva_endpoints.js)**: This includes a fetch utility function to send your Canva auth token to any Canva REST API endpoints. If you want to wrap the API without using a full API generator like the Canva quickstart, you would add those functions here.
 
 You can mostly ignore the other files since they contain boilerplate to make the demo work (basic SQLite database, uploads folder, etc.).
 
