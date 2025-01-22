@@ -24,6 +24,7 @@ You can mostly ignore the other files since they contain boilerplate to make the
 
    - Go to the [Canva Developer Portal](https://www.canva.com/developers/).
    - Create a new app and obtain your API keys.
+   - For detailed instructions on setting up a Canva integration, refer to the [How to Set Up A Canva Integration](#how-to-set-up-a-canva-integration) section below.
 
 2. **Clone the Repository**:
 
@@ -58,6 +59,43 @@ You can mostly ignore the other files since they contain boilerplate to make the
    - Open your browser and go to `http://localhost:3001` or whatever port you set in the .env file.
 
 Follow these steps to authenticate with Canva, create a design, retrieve an image of that design, and send it to a server.
+
+## How to Set Up A Canva Integration
+
+(I copied this section from the Canva Connect API Starter Kit since it's the same)
+
+Before you can run this demo, you'll need to do some setup beforehand.
+
+1. Open the [Developer Portal](https://www.canva.com/developers/integrations/connect-api), and click `Create an integration`.
+
+2. Under `Configuration` → `Configure your integration`.
+
+- `Integration name`: Add a name.
+- `Client ID`: Make a note of this value; you'll need it in a later step.
+- `Generate secret`: Click this and save the secret in a secure location, as you'll need it for a later step.
+
+3. Under `Scopes` → `Set the scopes`, check the following boxes:
+
+- `asset`: Read and Write.
+- `brandtemplate:content`: Read.
+- `brandtemplate:meta`: Read.
+- `design:content`: Read and Write.
+- `design:meta`: Read.
+- `profile`: Read.
+
+4. Under `Authentication` → `Add Authentication`, locate `URL 1` and enter the following value:
+
+```
+http://127.0.0.1:3001/canva/redirect
+```
+
+5. Under `Return navigation`, toggle on the `Enable return navigation` switch and enter the following as the `Return Url`:
+
+```
+http://127.0.0.1:3001/
+```
+
+If you're setting this up on a domain you'd put it in instead of the 127.0.0.1:3001 above.
 
 ## License
 
