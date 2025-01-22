@@ -1,20 +1,20 @@
 ## Demo Overview
 
-This demo is designed to show the bare minimum needed to authenticate with Canva, allow a user to create a design, retrieve an image of that design, and send it to a server. It uses vanilla JavaScript instead of TypeScript to keep the code clean and simple. Additionally, it leverages a CDN for Bootstrap to avoid the need for extensive embedded CSS. The HTML files are straightforward, with script tags ensuring that all event listeners are located near the buttons that activate them.
+This demo demonstrates the bare minimum needed to authenticate with Canva, allow a user to create a design, retrieve an image of that design, and send it to a server. It uses vanilla JavaScript instead of TypeScript to keep the code clean and simple. Additionally, it leverages a CDN for Bootstrap to avoid the need for extensive embedded CSS. The HTML files are straightforward, with script tags ensuring that all event listeners are located near the buttons that activate them.
 
 ## Design Considerations
 
-- **Vanilla JavaScript**: The project uses vanilla JavaScript instead of TypeScript to keep the code clean and simple. In production you probably will want to use typescript and a real UI framework like React, Vue, etc.
-- **Bootstrap CDN**: It leverages a CDN for Bootstrap to avoid the need for extensive embedded CSS. Bootstrap is not a requirement and only there to make the demo look nicer 😊
+- **Vanilla JavaScript**: The project uses vanilla JavaScript instead of TypeScript to keep the code clean and simple. In production, you might want to use TypeScript and a real UI framework like React or Vue.
+- **Bootstrap CDN**: It leverages a CDN for Bootstrap to avoid the need for extensive embedded CSS. Bootstrap is not a requirement and is only included to enhance the demo's appearance.
 - **Simple HTML Files**: The HTML files are straightforward, with script tags ensuring that all event listeners are located near the buttons that activate them.
 
 ## Highlights
 
-- **/public/index.html**: This is the main view for the application and has three states (User Logged Out, Handling Canva Return Request, and Displaying the User's Canva Design)
-- **/src/index.js**: All the route logic to connect to canva is in this file
-- **/public/canva_endpoints.js**: This includes a fetch utility function to send your canva auth token to any canva REST API endpoints. If you want to wrap the API without using a full API generator like the canva quickstart you would add those functions here.
+- **/public/index.html**: This is the main view for the application and has three states (User Logged Out, Handling Canva Return Request, and Displaying the User's Canva Design).
+- **/src/index.js**: All the route logic to connect to Canva is in this file.
+- **/public/canva_endpoints.js**: This includes a fetch utility function to send your Canva auth token to any Canva REST API endpoints. If you want to wrap the API without using a full API generator like the Canva quickstart, you would add those functions here.
 
-You can mostly ignore the other files since they contain boilerplate to make the demo work (basic sqlite database, uploads folder, etc.)
+You can mostly ignore the other files since they contain boilerplate to make the demo work (basic SQLite database, uploads folder, etc.).
 
 ## How to Run The Demo
 
@@ -26,7 +26,7 @@ You can mostly ignore the other files since they contain boilerplate to make the
 2. **Clone the Repository**:
 
    ```sh
-   git clone https://github.com/NTBooks/minimal-canva.git
+   git clone https://github.com/NTBooks/minimal-canva-demo.git
    cd minimal-canva
    ```
 
