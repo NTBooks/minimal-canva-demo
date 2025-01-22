@@ -1,0 +1,38 @@
+#whoami {
+  margin-top: 4rem;
+  padding: 1rem;
+  border: 1px solid green;
+  background-color: #d4edda;
+  color: #155724;
+  border-radius: 5px;
+}
+
+#starthidden {
+  display: none;
+}
+
+#imgresult {
+  max-width: 100%;
+  height: auto;
+  display: none;
+  opacity: 0;
+}
+
+#postimage {
+  display: none;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation: fadeIn 1s ease-in forwards;
+  animation-delay: 500ms;
+}
