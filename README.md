@@ -1,6 +1,6 @@
 ## Demo Overview
 
-This demo demonstrates the bare minimum needed to authenticate with Canva, allow a user to create a design, retrieve an image of that design, and send it to a server. It uses vanilla JavaScript instead of TypeScript to keep the code clean and simple. Additionally, it leverages a CDN for Bootstrap to avoid the need for extensive embedded CSS. The HTML files are straightforward, with script tags ensuring that all event listeners are located near the buttons that activate them.
+This demo demonstrates the bare minimum needed to authenticate with Canva, allow a user to create a design, retrieve an image of that design, and send it to a server.
 
 ## Design Considerations
 
