@@ -97,6 +97,11 @@ http://127.0.0.1:3001/
 
 If you're setting this up on a domain you'd put it in instead of the 127.0.0.1:3001 above.
 
+## NOTES
+
+- Unless your app is approved, only the canva account containing the `CANVA_CLIENT_ID` will be able to use the app.
+- The uploaded files can be viewed in vscode in the upload folder as you debug the application. The application has no routes to download files.
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
