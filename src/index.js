@@ -244,12 +244,17 @@ app.post("/upload", requiresAuth, async (req, res) => {
 
         uploadPath = approot + '/uploads/' + sampleFile.name;
 
-        sampleFile.mv(uploadPath, function (err) {
-            if (err)
-                return res.status(500).send(err);
+        if (process.env.DISABLE_SAVE == "false") {
+            sampleFile.mv(uploadPath, function (err) {
+                if (err)
+                    return res.status(500).send(err);
 
-            return res.send({ success: true, message: 'File uploaded!' });
-        });
+                return res.send({ success: true, message: 'File uploaded!' });
+            });
+        } else {
+            return res.send({ success: true, message: 'Save disabled, but file checks succeeded.' });
+        }
+
     } catch (e) {
         console.error(e);
         res.status(500).send('KO');
