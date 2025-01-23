@@ -236,6 +236,12 @@ app.post("/upload", requiresAuth, async (req, res) => {
             fs.mkdirSync(approot + '/uploads/');
         }
 
+        // make sure sampleFile.name ends in PNG, is not empty, and doesn't try to do any directory traversal
+        if (!sampleFile.name.match(/.png$/)) return res.status(400).send('Only PNG files are allowed.');
+        if (sampleFile.size === 0) return res.status(400).send('File is empty');
+        if (sampleFile.name.match(/\.\./)) return res.status(500);
+        // Better protection should be implemented in a real app, but this is just a demo
+
         uploadPath = approot + '/uploads/' + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
