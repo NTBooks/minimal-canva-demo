@@ -18,8 +18,8 @@
   "devDependencies": {
     "nodemon": "^3.1.9"
   },
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "author": "NTBooks",
+  "license": "MIT",
+  "description": "Minimal demo showing how to make a canva integration with express and nodejs",
   "type": "module"
 }
