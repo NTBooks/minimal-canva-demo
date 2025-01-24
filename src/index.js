@@ -14,7 +14,6 @@ import {
 } from './sqlite.js';
 
 import fs from 'fs';
-import bodyParser from 'body-parser';
 import { v4 as uuidv4 } from 'uuid';
 import fileUpload from 'express-fileupload';
 
